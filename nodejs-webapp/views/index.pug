@@ -1,0 +1,140 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Registration Form
+    style.
+      body {
+          font-family: 'Arial', sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+      }
+
+      .container {
+          width: 80%;
+          margin: 20px auto;
+          padding: 20px;
+          background-color: #fff;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+          text-align: center;
+      }
+
+      form {
+          max-width: 400px;
+          margin: 0 auto;
+      }
+
+      .form-group {
+          margin-bottom: 20px;
+      }
+
+      label {
+          font-weight: bold;
+          display: block;
+          margin-bottom: 5px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="date"] {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-sizing: border-box; /* Include padding and border in width calculation */
+      }
+
+      input[type="radio"] {
+          display: inline-block;
+          margin-right: 5px;
+      }
+
+      .radio-group {
+          display: flex;
+      }
+
+      input[type="submit"] {
+          width: 100%;
+          padding: 10px;
+          border: none;
+          border-radius: 5px;
+          background-color: #007bff;
+          color: #fff;
+          cursor: pointer;
+          font-size: 16px;
+      }
+
+      input[type="submit"]:hover {
+          background-color: #0056b3;
+      }
+  body
+    .container
+      h2 Registration Form
+      form#registrationForm(action='/', method='POST')
+        if error
+          p.error= error
+        if success
+          p.success= success
+        .form-group
+          label(for='user_fname') Firstname:
+          input(type='text', id='user_fname', name='user_fname', required)
+        .form-group
+          label(for='user_mname') Middlename:
+          input(type='text', id='user_mname', name='user_mname', required)
+        .form-group
+          label(for='user_lname') Lastname:
+          input(type='text', id='user_lname', name='user_lname', required)
+        .form-group
+          label(for='email') Email:
+          input(type='email', id='email', name='email', required)
+        .form-group
+          label(for='password') Password:
+          input(type='password', id='password', name='password', required)
+        .form-group.radio-group
+          label Gender:
+          input(type='radio', id='male', name='gender', value='male')
+          label(for='male') Male
+          input(type='radio', id='female', name='gender', value='female')
+          label(for='female') Female
+          input(type='radio', id='other', name='gender', value='other')
+          label(for='other') Other
+        .form-group
+          label(for='birthdate') Birthdate:
+          input(type='date', id='birthdate', name='birthdate', required)
+        .form-group.radio-group
+          label Status:
+          input(type='radio', id='active', name='status', value='active')
+          label(for='active') Active
+          input(type='radio', id='inactive', name='status', value='inactive')
+          label(for='inactive') Inactive
+          input(type='radio', id='other_status', name='status', value='other')
+          label(for='other_status') Other
+        input(type='submit', value='Register')
+  script.
+    document.getElementById("registrationForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent the form from submitting normally
+      var formData = new FormData(this); // Get form data
+      // Send form data to server using fetch
+      fetch("/", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log("Registration successful!");
+          location.reload(); // Reload the page to clear the form
+        } else {
+          console.error("Registration failed!");
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
+    });
